@@ -1,0 +1,73 @@
+*/ 
+======================================================
+Stored Procedure: Load Bronze Layer (Source -> bronze)
+======================================================
+Script Purpose:
+  This stored procedure loads data into the tables from the .csv files. 
+  The following actions are performed.
+    1.) Truncates the bronze tables before loading data.
+    2.) Uses the 'BULK INSERT' command to load data from .csv files to bronze tables.
+
+Parameters:
+None.
+  This stored procedure does not accept any parameters or return any values.
+Command:
+ Exec bronze.load_bronze
+
+Query Start:
+
+CREATE OR ALTER PROCEDURE  bronze.load_bronze AS
+BEGIN
+	TRUNCATE TABLE bronze.crm_cust_info;
+	BULK INSERT bronze.crm_cust_info
+	FROM 'C:\Users\HP\OneDrive\Desktop\SQL DW PROJECT\sql-data-warehouse-project\datasets\source_crm\cust_info.csv'
+	WITH (
+		FIRSTROW = 2,
+		FIELDTERMINATOR = ',',
+		TABLOCK 
+	);
+
+	TRUNCATE TABLE bronze.crm_prd_info;
+	BULK INSERT bronze.crm_prd_info
+	FROM 'C:\Users\HP\OneDrive\Desktop\SQL DW PROJECT\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
+	WITH( 
+		FIRSTROW = 2,
+		FIELDTERMINATOR = ',',
+		TABLOCK
+	);
+
+	TRUNCATE TABLE bronze.crm_sales_details;
+	BULK INSERT bronze.crm_sales_details
+	FROM 'C:\Users\HP\OneDrive\Desktop\SQL DW PROJECT\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
+	WITH (
+		FIRSTROW = 2,
+		FIELDTERMINATOR = ',',
+		TABLOCK
+		);
+
+	TRUNCATE TABLE bronze.erp_cust_az12;
+	BULK INSERT bronze.erp_cust_az12
+	FROM 'C:\Users\HP\OneDrive\Desktop\SQL DW PROJECT\sql-data-warehouse-project\datasets\source_erp\cust_az12.csv'
+	WITH ( firstrow =2,
+			fieldterminator = ',',
+			Tablock
+	);
+
+	TRUNCATE TABLE bronze.erp_loc_a101;
+	BULK INSERT bronze.erp_loc_a101
+	FROM 'C:\Users\HP\OneDrive\Desktop\SQL DW PROJECT\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
+	WITH (
+	Firstrow =2,
+	Fieldterminator = ',',
+	Tablock);
+
+	TRUNCATE TABLE bronze.erp_px_cat_g1v2;
+	BULK INSERT bronze.erp_px_cat_g1v2
+	FROM 'C:\Users\HP\OneDrive\Desktop\SQL DW PROJECT\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
+	WITH ( firstrow =2,
+		fieldterminator = ',',
+		tablock
+		);
+END
+
+EXEC bronze.load_bronze

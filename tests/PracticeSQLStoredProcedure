@@ -1,0 +1,18 @@
+CREATE PROCEDURE GetCustinfo AS
+BEGIN
+SELECT 
+COUNT(*) as total_rows_cst_S
+FROM(
+SELECT 
+cst_id,
+cst_key,
+cst_firstname,
+cst_marital_status,
+cst_create_date
+FROM bronze.crm_cust_info
+Where cst_marital_status = 'S'
+)t;
+END
+GO
+
+EXEC GetCustinfo
